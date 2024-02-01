@@ -3,6 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url = uri("https://jitpack.io") }
     }
 }
 dependencyResolutionManagement {
@@ -10,6 +11,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
@@ -21,4 +23,4 @@ include(":feature:onboarding:data")
 include(":core:firebase")
 include(":feature:signin:presentation")
 include(":baseui")
-include(":core:navigation")
+include(":core:datastore")

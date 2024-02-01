@@ -1,4 +1,4 @@
-package fitplan.core.navigation
+package fitplan.preferences.datastore
 
 import org.junit.Test
 

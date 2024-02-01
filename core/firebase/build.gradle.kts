@@ -2,6 +2,8 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id(Plugins.`google-gms-google-services`)
+    id(Plugins.`dagger-hilt-android`)
+    kotlin(Plugins.kapt)
 }
 
 android {
@@ -31,6 +33,9 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
@@ -43,6 +48,12 @@ dependencies {
     // Firebase
     implementation(platform(Dependencies.`firebase-bom`))
     implementation(Dependencies.`firebase-auth`)
+    implementation(Dependencies.`firebase-firestore`)
+
+    // Dagger Hilt
+    implementation(Dependencies.`hilt-android`)
+    implementation(Dependencies.`hilt-navigation-compose`)
+    kapt(Dependencies.`hilt-compiler`)
 
     // Testing
     testImplementation("junit:junit:4.13.2")

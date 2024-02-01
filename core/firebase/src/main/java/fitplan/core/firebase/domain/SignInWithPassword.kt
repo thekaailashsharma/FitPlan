@@ -25,9 +25,9 @@ fun signInUser(email: String, password: String): Flow<SignInStatus> = callbackFl
                 }
             }
 
-        awaitClose()
     } catch (e: Exception) {
         trySend(SignInStatus.Error(e.message ?: "Unknown error"))
             .isSuccess
     }
+    awaitClose()
 }

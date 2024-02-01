@@ -45,6 +45,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import fitplan.core.firebase.LoginViewModel
 import fitplan.planner.data.dto.Tasks
 import fitplan.ui.login.screens.SignInScreen
 import fitplan.ui.theme.backGround
@@ -53,6 +55,7 @@ import fitplan.ui.theme.monte
 import fitplan.ui.theme.monteEB
 import fitplan.ui.theme.textColor
 import fitplan.ui.theme.yellow
+import java.security.AccessController
 import kotlin.random.Random
 
 
@@ -60,6 +63,8 @@ import kotlin.random.Random
 @Composable
 fun OnBoardingScreen(
     paddingValues: PaddingValues,
+    navController: NavController,
+    viewModel: LoginViewModel
 ) {
     val isLoginVisible = remember { mutableStateOf(false) }
     val isRegistered = remember { mutableStateOf(false) }
@@ -69,7 +74,6 @@ fun OnBoardingScreen(
             .background(backGround)
             .padding(bottom = paddingValues.calculateBottomPadding())
     ) {
-        val screenWidth = LocalConfiguration.current.screenWidthDp
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -125,7 +129,7 @@ fun OnBoardingScreen(
                 }
             )
         ) {
-            SignInScreen(isRegistered)
+            SignInScreen(isRegistered, navController, viewModel)
         }
         AnimatedVisibility(
             visible = !isLoginVisible.value,

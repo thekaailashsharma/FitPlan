@@ -117,6 +117,15 @@ dependencies {
     // Onboarding module
     implementation(project(":feature:onboarding:presentation"))
 
+    // Base UI module
+    implementation(project(":baseui"))
+
+    // Core Firebase module
+    implementation(project(":core:firebase"))
+
+    // Core Datastore module
+    implementation(project(":core:datastore"))
+
 
     // Testing
     testImplementation("junit:junit:4.13.2")

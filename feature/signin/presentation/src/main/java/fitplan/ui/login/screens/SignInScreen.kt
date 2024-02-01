@@ -6,7 +6,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +18,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Wallet
@@ -48,15 +46,15 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import fitplan.core.firebase.LoginViewModel
 import fitplan.core.firebase.data.SignInStatus
-import fitplan.core.firebase.domain.createUser
 import fitplan.core.firebase.domain.signInUser
 import fitplan.planner.baseui.utils.TextFieldWithIcons
 import fitplan.ui.theme.R
 import fitplan.ui.theme.backGround
 import fitplan.ui.theme.monte
 import fitplan.ui.theme.monteEB
-import fitplan.ui.theme.orange
 import fitplan.ui.theme.textColor
 import fitplan.ui.theme.yellow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -65,7 +63,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun SignInScreen(isRegistered: MutableState<Boolean>) {
+fun SignInScreen(
+    isRegistered: MutableState<Boolean>,
+    navController: NavController,
+    viewModel: LoginViewModel
+) {
     var loginEmail by remember { mutableStateOf(TextFieldValue("")) }
     var loginPassword by remember { mutableStateOf(TextFieldValue("")) }
     val coroutineScope = rememberCoroutineScope()
@@ -227,6 +229,6 @@ fun SignInScreen(isRegistered: MutableState<Boolean>) {
             tween(durationMillis = 500)
         )
     ) {
-        RegisterScreen(isRegistered = isRegistered)
+        RegisterScreen(isRegistered = isRegistered, navController = navController, viewModel = viewModel)
     }
 }

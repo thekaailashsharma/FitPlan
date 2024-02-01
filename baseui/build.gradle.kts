@@ -60,6 +60,12 @@ dependencies {
     // Material Extended Icons
     implementation(Dependencies.`material3-icons-extended`)
 
+    // Navigation
+    implementation(Dependencies.`navigation-compose`)
+
+    // Coil
+    implementation(Dependencies.`coil-compose`)
+
     // Theme module
     implementation(project(":theme"))
 

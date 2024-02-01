@@ -41,6 +41,9 @@ object Versions {
     // Firebase
     const val `firebase-bom` = "32.6.0"
 
+    // JetFirestore
+    const val `jet-firestore` = "1.0.2"
+
 }
 
 
@@ -105,7 +108,8 @@ object Dependencies {
     // Firebase
     const val `firebase-bom` = "com.google.firebase:firebase-bom:${Versions.`firebase-bom`}"
     const val `firebase-auth` = "com.google.firebase:firebase-auth-ktx"
-
+    const val `firebase-firestore` = "com.google.firebase:firebase-firestore-ktx"
+    const val `jet-firestore` = "com.github.raipankaj:JetFirestore:${Versions.`jet-firestore`}"
 
 }
 
