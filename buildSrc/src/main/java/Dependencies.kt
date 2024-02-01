@@ -38,6 +38,9 @@ object Versions {
     // Coil
     const val `coil-compose` = "2.2.2"
 
+    // Firebase
+    const val `firebase-bom` = "32.6.0"
+
 }
 
 
@@ -99,6 +102,10 @@ object Dependencies {
     const val `compose-ui-tooling-preview` = "androidx.compose.ui:ui-tooling-preview"
     const val `compose-material3` = "androidx.compose.material3:material3"
 
+    // Firebase
+    const val `firebase-bom` = "com.google.firebase:firebase-bom:${Versions.`firebase-bom`}"
+    const val `firebase-auth` = "com.google.firebase:firebase-auth-ktx"
+
 
 }
 
@@ -109,4 +116,5 @@ object Plugins {
     const val `dagger-hilt-android` = "dagger.hilt.android.plugin"
     const val kapt = "kapt"
     const val `kotlinx-serialization` = "kotlinx-serialization"
+    const val `google-gms-google-services` = "com.google.gms.google-services"
 }
