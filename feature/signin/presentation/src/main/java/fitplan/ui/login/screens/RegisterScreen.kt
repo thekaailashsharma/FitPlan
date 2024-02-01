@@ -202,9 +202,9 @@ fun RegisterScreen(
                                                     Toast.LENGTH_SHORT
                                                 ).show()
                                                 viewModel.setData(
-                                                    registerName.text,
-                                                    registerEmail.text,
-                                                    registerGender.text,
+                                                    name = registerName.text,
+                                                    email = registerEmail.text,
+                                                    gender = registerGender.text,
                                                 )
                                                 navController.navigate(Screens.ChooseAvatar.route)
                                             }

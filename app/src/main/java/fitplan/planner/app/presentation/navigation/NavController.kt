@@ -42,9 +42,9 @@ fun NavigationController(paddingValues: PaddingValues) {
 
         composable(Screens.Home.route) {
             Column {
-               Text(name.value, fontSize = 20.sp, color = Color.White)
+//               Text(name.value, fontSize = 20.sp, color = Color.White)
                 Text(email.value, fontSize = 20.sp, color = Color.White)
-                Text(pfp.value, fontSize = 20.sp, color = Color.White)
+//                Text(pfp.value, fontSize = 20.sp, color = Color.White)
                 Text(gender.value, fontSize = 20.sp, color = Color.White)
             }
         }
