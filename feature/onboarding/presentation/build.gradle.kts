@@ -69,8 +69,11 @@ dependencies {
     // Base UI module
     implementation(project(":baseui"))
 
-    // CoreFirebase module
+    // Core Firebase module
     implementation(project(":core:firebase"))
+
+    // Core Datastore module
+    implementation(project(":core:datastore"))
 
     // SignIn module
     implementation(project(":feature:signin:presentation"))

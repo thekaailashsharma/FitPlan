@@ -123,6 +123,9 @@ dependencies {
     // Core Firebase module
     implementation(project(":core:firebase"))
 
+    // Core Datastore module
+    implementation(project(":core:datastore"))
+
 
     // Testing
     testImplementation("junit:junit:4.13.2")

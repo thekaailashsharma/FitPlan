@@ -42,12 +42,15 @@ import fitplan.core.firebase.domain.updateInfoToFirebase
 import fitplan.planner.baseui.navigation.Screens
 import fitplan.planner.baseui.utils.ProfileImage
 import fitplan.planner.baseui.utils.dpFromPx
+import fitplan.preferences.datastore.UserDatastore
 import fitplan.ui.theme.appGradient
 import fitplan.ui.theme.backGround
 import fitplan.ui.theme.buttonBackground
 import fitplan.ui.theme.lightGray
 import fitplan.ui.theme.textColor
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun AvatarsScreen(
@@ -62,6 +65,7 @@ fun AvatarsScreen(
     val name by viewModel.name.collectAsState()
     val email by viewModel.email.collectAsState()
     val gender by viewModel.gender.collectAsState()
+    val datastore = UserDatastore(context)
 
     Box(
         modifier = Modifier
@@ -125,8 +129,12 @@ fun AvatarsScreen(
                 onClick = {
                     coroutineScope.launch {
                         if (selectedAvatar.imageUrl != "") {
-                            coroutineScope.launch {
+                            withContext(Dispatchers.IO) {
                                 println("Infooooooo: Name=$name email=$email gender=$gender")
+                                datastore.saveEmail(email)
+                                datastore.saveGender(gender)
+                                datastore.savePfp(selectedAvatar.imageUrl)
+                                datastore.saveLoginStatus(true)
                                 updateInfoToFirebase(
                                     name = name,
                                     email = email,
@@ -134,9 +142,11 @@ fun AvatarsScreen(
                                     context = context,
                                     imageUrl = selectedAvatar.imageUrl
                                 )
-                                navController.navigate(
-                                    Screens.Home.route
-                                )
+                                withContext(Dispatchers.Main) {
+                                    navController.navigate(
+                                        Screens.Home.route
+                                    )
+                                }
                             }
                         } else {
                             Toast.makeText(
