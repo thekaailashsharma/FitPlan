@@ -69,7 +69,6 @@ fun OnBoardingScreen(
             .background(backGround)
             .padding(bottom = paddingValues.calculateBottomPadding())
     ) {
-        val screenWidth = LocalConfiguration.current.screenWidthDp
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
