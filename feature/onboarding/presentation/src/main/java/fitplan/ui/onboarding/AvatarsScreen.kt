@@ -45,6 +45,7 @@ import fitplan.planner.baseui.utils.dpFromPx
 import fitplan.ui.theme.appGradient
 import fitplan.ui.theme.backGround
 import fitplan.ui.theme.buttonBackground
+import fitplan.ui.theme.lightGray
 import fitplan.ui.theme.textColor
 import kotlinx.coroutines.launch
 
@@ -95,7 +96,7 @@ fun AvatarsScreen(
                     shape = CircleShape,
                     elevation = CardDefaults.cardElevation(0.dp),
                     colors = CardDefaults.cardColors(
-                        if (selectedAvatar == avatar) textColor else buttonBackground
+                        if (selectedAvatar == avatar) textColor else lightGray
                     ),
                 ) {
                     Box(
@@ -125,6 +126,7 @@ fun AvatarsScreen(
                     coroutineScope.launch {
                         if (selectedAvatar.imageUrl != "") {
                             coroutineScope.launch {
+                                println("Infooooooo: Name=$name email=$email gender=$gender")
                                 updateInfoToFirebase(
                                     name = name,
                                     email = email,
@@ -147,14 +149,16 @@ fun AvatarsScreen(
 
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = textColor,
-                    contentColor = textColor
+                    containerColor = buttonBackground,
+                    contentColor = textColor,
+                    disabledContentColor = textColor,
+                    disabledContainerColor = backGround,
                 ),
                 enabled = selectedAvatar.imageUrl != ""
             ) {
                 Text(
                     text = "Take Me In",
-                    color = Color.White,
+                    color = textColor,
                     fontSize = 20.sp,
                 )
             }

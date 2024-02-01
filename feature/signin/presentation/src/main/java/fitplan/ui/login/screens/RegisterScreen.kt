@@ -201,6 +201,11 @@ fun RegisterScreen(
                                                     "Success",
                                                     Toast.LENGTH_SHORT
                                                 ).show()
+                                                viewModel.setData(
+                                                    registerName.text,
+                                                    registerEmail.text,
+                                                    registerGender.text,
+                                                )
                                                 navController.navigate(Screens.ChooseAvatar.route)
                                             }
 
