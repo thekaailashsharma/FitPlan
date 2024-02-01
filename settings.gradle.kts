@@ -15,4 +15,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Fitplan"
 include(":app")
- 
+include(":feature:onboarding:presentation")
+include(":theme")
+include(":feature:onboarding:data")

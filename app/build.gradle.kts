@@ -88,7 +88,7 @@ dependencies {
     implementation(Dependencies.`ktor-client-content-negotiation`)
     implementation(Dependencies.`ktor-client-serialization-gson`)
     implementation(Dependencies.`ktor-serialization-kotlinx-json`)
-    implementation(Dependencies.`ktor-client-logging-jvm`)
+//    implementation(Dependencies.`ktor-client-logging-jvm`)
     implementation(Dependencies.`ktor-client-gson`)
 
     // Gson
@@ -112,6 +112,9 @@ dependencies {
 
     // Coil
     implementation(Dependencies.`coil-compose`)
+
+    // Onboarding module
+    implementation(project(":feature:onboarding:presentation"))
 
 
 
