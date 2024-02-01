@@ -13,7 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import fitplan.planner.app.ui.theme.FitplanTheme
-import fitplan.ui.onboarding.JobsBoardingScreen
+import fitplan.ui.onboarding.OnBoardingScreen
+
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -22,7 +23,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             FitplanTheme {
                 Scaffold { paddingValue ->
-                    JobsBoardingScreen(paddingValues = paddingValue)
+                    println(paddingValue)
+                    OnBoardingScreen(paddingValues = paddingValue)
                 }
             }
         }

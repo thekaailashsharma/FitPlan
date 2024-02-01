@@ -6,6 +6,7 @@ plugins {
     id(Plugins.`dagger-hilt-android`)
     kotlin(Plugins.kapt)
     id(Plugins.`kotlinx-serialization`)
+    id(Plugins.`google-gms-google-services`)
 }
 
 android {
@@ -117,7 +118,7 @@ dependencies {
     implementation(project(":feature:onboarding:presentation"))
 
 
-
+    // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

@@ -63,6 +63,12 @@ dependencies {
     // Theme module
     implementation(project(":theme"))
 
+    // Base UI module
+    implementation(project(":baseui"))
+
+    // SignIn module
+    implementation(project(":feature:signin:presentation"))
+
     // Onboarding module:data
     implementation(project(":feature:onboarding:data"))
 }
