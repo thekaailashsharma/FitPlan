@@ -6,6 +6,7 @@ plugins {
     id(Plugins.`dagger-hilt-android`)
     kotlin(Plugins.kapt)
     id(Plugins.`kotlinx-serialization`)
+    id(Plugins.`google-gms-google-services`)
 }
 
 android {

@@ -1,5 +1,8 @@
 package fitplan.ui.onboarding
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -31,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
@@ -42,6 +46,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fitplan.planner.data.dto.Tasks
+import fitplan.ui.login.screens.SignInScreen
 import fitplan.ui.theme.backGround
 import fitplan.ui.theme.lightGray
 import fitplan.ui.theme.monte
@@ -53,9 +58,11 @@ import kotlin.random.Random
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun JobsBoardingScreen(
+fun OnBoardingScreen(
     paddingValues: PaddingValues,
 ) {
+    val isLoginVisible = remember { mutableStateOf(false) }
+    val isRegistered = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -67,6 +74,13 @@ fun JobsBoardingScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(backGround)
+                .then(
+                    if (isLoginVisible.value) {
+                        Modifier.blur(6.dp)
+                    } else {
+                        Modifier
+                    }
+                )
                 .drawWithCache {
                     val gradient =
                         Brush.verticalGradient(
@@ -100,73 +114,98 @@ fun JobsBoardingScreen(
             }
 
         }
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
+        AnimatedVisibility(
+            visible = isLoginVisible.value,
+            enter = slideInHorizontally(initialOffsetX = {
+                it
+            }),
+            exit = slideOutHorizontally(
+                targetOffsetX = {
+                    it
+                }
+            )
         ) {
-            Column(
-                modifier = Modifier,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom
+            SignInScreen(isRegistered)
+        }
+        AnimatedVisibility(
+            visible = !isLoginVisible.value,
+            enter = slideInHorizontally(initialOffsetX = {
+                -it
+            }),
+            exit = slideOutHorizontally(
+                targetOffsetX = {
+                    -it
+                }
+            )
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
             ) {
-                Spacer(modifier = Modifier.height(30.dp))
-                Icon(
-                    painter = painterResource(id = R.drawable.group_21),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(500.dp)
-                        .height(650.dp),
-                    tint = Color.Unspecified
-
-                )
-                Row(
-                    modifier = Modifier
-                        .padding(bottom = 20.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.Bottom
+                Column(
+                    modifier = Modifier,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom
                 ) {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Button(
-                            onClick = {
+                    Spacer(modifier = Modifier.height(30.dp))
+                    Icon(
+                        painter = painterResource(id = R.drawable.group_21),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(500.dp)
+                            .height(650.dp),
+                        tint = Color.Unspecified
 
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.Transparent,
-                                contentColor = Color.White
-                            ),
-                            border = BorderStroke(1.dp, yellow.copy(alpha = 0.7f)),
+                    )
+                    Row(
+                        modifier = Modifier
+                            .padding(bottom = 20.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Row(
-                                modifier = Modifier,
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Center
+                            Button(
+                                onClick = {
+                                    isLoginVisible.value = true
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color.Transparent,
+                                    contentColor = Color.White
+                                ),
+                                border = BorderStroke(1.dp, yellow.copy(alpha = 0.7f)),
                             ) {
                                 Row(
                                     modifier = Modifier,
                                     verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center
                                 ) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.fitplan),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(40.dp),
-                                        tint = Color.Unspecified
-                                    )
-                                    Spacer(modifier = Modifier.width(7.dp))
-                                    Text(
-                                        text = "Let's Start",
-                                        fontSize = 19.sp,
-                                        fontFamily = monteEB,
-                                        fontWeight = FontWeight.ExtraBold,
-                                        softWrap = true,
-                                        modifier = Modifier.fillMaxWidth(0.75f),
-                                        textAlign = TextAlign.Center,
-                                        color = textColor.copy(0.85f),
-                                    )
+                                    Row(
+                                        modifier = Modifier,
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.fitplan),
+                                            contentDescription = null,
+                                            modifier = Modifier
+                                                .size(40.dp),
+                                            tint = Color.Unspecified
+                                        )
+                                        Spacer(modifier = Modifier.width(7.dp))
+                                        Text(
+                                            text = "Let's Start",
+                                            fontSize = 19.sp,
+                                            fontFamily = monteEB,
+                                            fontWeight = FontWeight.ExtraBold,
+                                            softWrap = true,
+                                            modifier = Modifier.fillMaxWidth(0.75f),
+                                            textAlign = TextAlign.Center,
+                                            color = textColor.copy(0.85f),
+                                        )
+                                    }
                                 }
                             }
                         }

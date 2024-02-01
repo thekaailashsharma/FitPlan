@@ -10,19 +10,24 @@ import kotlinx.coroutines.flow.callbackFlow
 
 @ExperimentalCoroutinesApi
 fun signInUser(email: String, password: String): Flow<SignInStatus> = callbackFlow {
-    val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    try {
+        val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    auth.signInWithEmailAndPassword(email, password)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Sign-in successful
-                trySend(SignInStatus.Success).isSuccess
-            } else {
-                // Sign-in failed
-                trySend(SignInStatus.Error(task.exception?.message ?: "Unknown error"))
-                    .isSuccess
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Sign-in successful
+                    trySend(SignInStatus.Success).isSuccess
+                } else {
+                    // Sign-in failed
+                    trySend(SignInStatus.Error(task.exception?.message ?: "Unknown error"))
+                        .isSuccess
+                }
             }
-        }
 
-    awaitClose()
+        awaitClose()
+    } catch (e: Exception) {
+        trySend(SignInStatus.Error(e.message ?: "Unknown error"))
+            .isSuccess
+    }
 }

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "fitplan.ui.login"
+    namespace = "fitplan.planner.baseui"
     compileSdk = 33
 
     defaultConfig {
@@ -41,7 +41,6 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-
 }
 
 dependencies {
@@ -64,13 +63,9 @@ dependencies {
     // Theme module
     implementation(project(":theme"))
 
-    // Firebase module
-    implementation(project(":core:firebase"))
-
-    // BaseUI module
-    implementation(project(":baseui"))
-
-    // Testing
+    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.11.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
