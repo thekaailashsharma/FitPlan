@@ -6,7 +6,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -19,9 +18,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Male
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -48,14 +48,16 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import fitplan.core.firebase.LoginViewModel
 import fitplan.core.firebase.data.SignInStatus
 import fitplan.core.firebase.domain.createUser
+import fitplan.planner.baseui.navigation.Screens
 import fitplan.planner.baseui.utils.TextFieldWithIcons
 import fitplan.ui.theme.R
 import fitplan.ui.theme.backGround
 import fitplan.ui.theme.monte
 import fitplan.ui.theme.monteEB
-import fitplan.ui.theme.orange
 import fitplan.ui.theme.textColor
 import fitplan.ui.theme.yellow
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -64,9 +66,15 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun RegisterScreen(isRegistered: MutableState<Boolean>) {
+fun RegisterScreen(
+    isRegistered: MutableState<Boolean>,
+    navController: NavController,
+    viewModel: LoginViewModel
+) {
     var registerEmail by remember { mutableStateOf(TextFieldValue("")) }
     var registerPassword by remember { mutableStateOf(TextFieldValue("")) }
+    var registerName by remember { mutableStateOf(TextFieldValue("")) }
+    var registerGender by remember { mutableStateOf(TextFieldValue("")) }
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     AnimatedVisibility(
@@ -113,6 +121,40 @@ fun RegisterScreen(isRegistered: MutableState<Boolean>) {
                     }
                     Spacer(modifier = Modifier.height(20.dp))
                     TextFieldWithIcons(
+                        textValue = "Name",
+                        placeholder = "Enter your Name",
+                        icon = Icons.Filled.Person,
+                        mutableText = registerName,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next,
+                        isTrailingVisible = false,
+                        trailingIcon = null,
+                        onTrailingClick = {},
+                        isEnabled = true,
+                        onValueChanged = { value ->
+                            registerName = value
+                        },
+                        containerColor = Color.Transparent,
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextFieldWithIcons(
+                        textValue = "Gender",
+                        placeholder = "Enter your Gender",
+                        icon = Icons.Filled.Male,
+                        mutableText = registerGender,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next,
+                        isTrailingVisible = false,
+                        trailingIcon = null,
+                        onTrailingClick = {},
+                        isEnabled = true,
+                        onValueChanged = { value ->
+                            registerGender = value
+                        },
+                        containerColor = Color.Transparent,
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextFieldWithIcons(
                         textValue = "Email",
                         placeholder = "Enter your email",
                         icon = Icons.Filled.Wallet,
@@ -146,6 +188,7 @@ fun RegisterScreen(isRegistered: MutableState<Boolean>) {
                         containerColor = Color.Transparent,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
+
                     Button(
                         onClick = {
                             coroutineScope.launch {
@@ -158,6 +201,7 @@ fun RegisterScreen(isRegistered: MutableState<Boolean>) {
                                                     "Success",
                                                     Toast.LENGTH_SHORT
                                                 ).show()
+                                                navController.navigate(Screens.ChooseAvatar.route)
                                             }
 
                                             is SignInStatus.Error -> {
@@ -227,6 +271,10 @@ fun RegisterScreen(isRegistered: MutableState<Boolean>) {
             tween(durationMillis = 500)
         )
     ) {
-        SignInScreen(isRegistered = isRegistered)
+        SignInScreen(
+            isRegistered = isRegistered,
+            navController = navController,
+            viewModel = viewModel
+        )
     }
 }

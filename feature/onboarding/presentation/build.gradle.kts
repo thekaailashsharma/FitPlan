@@ -60,11 +60,17 @@ dependencies {
     // Material Extended Icons
     implementation(Dependencies.`material3-icons-extended`)
 
+    // Navigation
+    implementation(Dependencies.`navigation-compose`)
+
     // Theme module
     implementation(project(":theme"))
 
     // Base UI module
     implementation(project(":baseui"))
+
+    // CoreFirebase module
+    implementation(project(":core:firebase"))
 
     // SignIn module
     implementation(project(":feature:signin:presentation"))

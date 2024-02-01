@@ -64,7 +64,7 @@ fun TextFieldWithIcons(
             )
         },
         trailingIcon = {
-            if (isPassword.value) {
+            if (keyboardType == KeyboardType.Password) {
                 if (isPasswordVisible.value) {
                     IconButton(onClick = {
                         isPasswordVisible.value = !isPasswordVisible.value
@@ -133,7 +133,7 @@ fun TextFieldWithIcons(
         ),
         enabled = isEnabled,
         shape = RoundedCornerShape(20.dp),
-        visualTransformation = if (!isPasswordVisible.value) {
+        visualTransformation = if (!isPasswordVisible.value && keyboardType == KeyboardType.Password) {
             PasswordVisualTransformation()
         } else {
             VisualTransformation.None

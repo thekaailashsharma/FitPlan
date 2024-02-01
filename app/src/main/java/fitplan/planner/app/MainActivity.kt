@@ -12,10 +12,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dagger.hilt.android.AndroidEntryPoint
+import fitplan.planner.app.presentation.navigation.NavigationController
 import fitplan.planner.app.ui.theme.FitplanTheme
 import fitplan.ui.onboarding.OnBoardingScreen
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +26,7 @@ class MainActivity : ComponentActivity() {
             FitplanTheme {
                 Scaffold { paddingValue ->
                     println(paddingValue)
-                    OnBoardingScreen(paddingValues = paddingValue)
+                    NavigationController(paddingValues = paddingValue)
                 }
             }
         }
