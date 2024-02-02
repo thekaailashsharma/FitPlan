@@ -129,6 +129,9 @@ dependencies {
     // Home Screen module
     implementation(project(":feature:homeScreen:presentation"))
 
+    // NewTask module
+    implementation(project(":feature:newTaskScreen:presentation"))
+
 
     // Testing
     testImplementation("junit:junit:4.13.2")

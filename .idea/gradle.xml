@@ -19,6 +19,8 @@
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/homeScreen" />
             <option value="$PROJECT_DIR$/feature/homeScreen/presentation" />
+            <option value="$PROJECT_DIR$/feature/newTaskScreen" />
+            <option value="$PROJECT_DIR$/feature/newTaskScreen/presentation" />
             <option value="$PROJECT_DIR$/feature/onboarding" />
             <option value="$PROJECT_DIR$/feature/onboarding/data" />
             <option value="$PROJECT_DIR$/feature/onboarding/presentation" />

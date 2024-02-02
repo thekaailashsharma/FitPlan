@@ -18,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fitplan.planner.app.presentation.navigation.NavigationController
 import fitplan.planner.app.ui.theme.FitplanTheme
 import fitplan.preferences.datastore.UserDatastore
+import fitplan.ui.newTask.NewTaskScreen
 import fitplan.ui.onboarding.OnBoardingScreen
 import fitplan.ui.presentation.HomeScreen
 
@@ -35,7 +36,8 @@ class MainActivity : ComponentActivity() {
                     val name = datastore.getName.collectAsState(initial = "")
                     val email = datastore.getEmail.collectAsState(initial = "")
                     val pfp = datastore.getPfp.collectAsState(initial = "")
-                    HomeScreen(pfp.value)
+                    NewTaskScreen()
+//                    HomeScreen(pfp.value)
 //                    NavigationController(paddingValues = paddingValue)
                 }
             }

@@ -47,6 +47,9 @@ object Versions {
     // Collapsing Toolbar
     const val `collapsing-toolbar` = "2.3.5"
 
+    // Wheel Picker
+    const val `wheel-picker` = "1.0.0-beta01"
+
 }
 
 
@@ -116,6 +119,9 @@ object Dependencies {
 
     // Collapsing Toolbar
     const val `collapsing-toolbar` = "me.onebone:toolbar-compose:${Versions.`collapsing-toolbar`}"
+
+    // Wheel Picker
+    const val `wheel-picker` = "com.github.zj565061763:compose-wheel-picker:${Versions.`wheel-picker`}"
 
 }
 

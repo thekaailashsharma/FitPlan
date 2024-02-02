@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import fitplan.core.firebase.LoginViewModel
 import fitplan.planner.baseui.navigation.Screens
 import fitplan.preferences.datastore.UserDatastore
+import fitplan.ui.newTask.NewTaskScreen
 import fitplan.ui.onboarding.AvatarsScreen
 import fitplan.ui.onboarding.OnBoardingScreen
 
@@ -54,6 +55,10 @@ fun NavigationController(paddingValues: PaddingValues) {
                 navController = navController,
                 viewModel = loginViewModel
             )
+        }
+
+        composable(Screens.AddTask.route) {
+            NewTaskScreen()
         }
 
     }
