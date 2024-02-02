@@ -126,6 +126,9 @@ dependencies {
     // Core Datastore module
     implementation(project(":core:datastore"))
 
+    // Home Screen module
+    implementation(project(":feature:homeScreen:presentation"))
+
 
     // Testing
     testImplementation("junit:junit:4.13.2")

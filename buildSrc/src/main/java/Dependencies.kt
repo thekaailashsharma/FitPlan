@@ -44,6 +44,9 @@ object Versions {
     // JetFirestore
     const val `jet-firestore` = "1.0.2"
 
+    // Collapsing Toolbar
+    const val `collapsing-toolbar` = "2.3.5"
+
 }
 
 
@@ -110,6 +113,9 @@ object Dependencies {
     const val `firebase-auth` = "com.google.firebase:firebase-auth-ktx"
     const val `firebase-firestore` = "com.google.firebase:firebase-firestore-ktx"
     const val `jet-firestore` = "com.github.raipankaj:JetFirestore:${Versions.`jet-firestore`}"
+
+    // Collapsing Toolbar
+    const val `collapsing-toolbar` = "me.onebone:toolbar-compose:${Versions.`collapsing-toolbar`}"
 
 }
 
