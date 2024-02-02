@@ -3,6 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url = uri("https://jitpack.io") }
     }
 }
 dependencyResolutionManagement {
@@ -10,9 +11,19 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
 rootProject.name = "Fitplan"
 include(":app")
- 
+include(":feature:onboarding:presentation")
+include(":theme")
+include(":feature:onboarding:data")
+include(":core:firebase")
+include(":feature:signin:presentation")
+include(":baseui")
+include(":core:datastore")
+include(":feature:homeScreen:presentation")
+include(":feature:newTaskScreen:presentation")
+include(":core:room")

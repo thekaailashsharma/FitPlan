@@ -6,6 +6,7 @@ plugins {
     id(Plugins.`dagger-hilt-android`)
     kotlin(Plugins.kapt)
     id(Plugins.`kotlinx-serialization`)
+    id(Plugins.`google-gms-google-services`)
 }
 
 android {
@@ -88,7 +89,7 @@ dependencies {
     implementation(Dependencies.`ktor-client-content-negotiation`)
     implementation(Dependencies.`ktor-client-serialization-gson`)
     implementation(Dependencies.`ktor-serialization-kotlinx-json`)
-    implementation(Dependencies.`ktor-client-logging-jvm`)
+//    implementation(Dependencies.`ktor-client-logging-jvm`)
     implementation(Dependencies.`ktor-client-gson`)
 
     // Gson
@@ -113,8 +114,29 @@ dependencies {
     // Coil
     implementation(Dependencies.`coil-compose`)
 
+    // Onboarding module
+    implementation(project(":feature:onboarding:presentation"))
+
+    // Base UI module
+    implementation(project(":baseui"))
+
+    // Core Firebase module
+    implementation(project(":core:firebase"))
+
+    // Core Datastore module
+    implementation(project(":core:datastore"))
+
+    // Home Screen module
+    implementation(project(":feature:homeScreen:presentation"))
+
+    // NewTask module
+    implementation(project(":feature:newTaskScreen:presentation"))
+
+    // Room Module
+    implementation(project(":core:room"))
 
 
+    // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

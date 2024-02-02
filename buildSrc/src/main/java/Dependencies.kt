@@ -38,6 +38,18 @@ object Versions {
     // Coil
     const val `coil-compose` = "2.2.2"
 
+    // Firebase
+    const val `firebase-bom` = "32.6.0"
+
+    // JetFirestore
+    const val `jet-firestore` = "1.0.2"
+
+    // Collapsing Toolbar
+    const val `collapsing-toolbar` = "2.3.5"
+
+    // Wheel Picker
+    const val `wheel-picker` = "1.0.0-beta01"
+
 }
 
 
@@ -99,6 +111,17 @@ object Dependencies {
     const val `compose-ui-tooling-preview` = "androidx.compose.ui:ui-tooling-preview"
     const val `compose-material3` = "androidx.compose.material3:material3"
 
+    // Firebase
+    const val `firebase-bom` = "com.google.firebase:firebase-bom:${Versions.`firebase-bom`}"
+    const val `firebase-auth` = "com.google.firebase:firebase-auth-ktx"
+    const val `firebase-firestore` = "com.google.firebase:firebase-firestore-ktx"
+    const val `jet-firestore` = "com.github.raipankaj:JetFirestore:${Versions.`jet-firestore`}"
+
+    // Collapsing Toolbar
+    const val `collapsing-toolbar` = "me.onebone:toolbar-compose:${Versions.`collapsing-toolbar`}"
+
+    // Wheel Picker
+    const val `wheel-picker` = "com.github.zj565061763:compose-wheel-picker:${Versions.`wheel-picker`}"
 
 }
 
@@ -109,4 +132,5 @@ object Plugins {
     const val `dagger-hilt-android` = "dagger.hilt.android.plugin"
     const val kapt = "kapt"
     const val `kotlinx-serialization` = "kotlinx-serialization"
+    const val `google-gms-google-services` = "com.google.gms.google-services"
 }

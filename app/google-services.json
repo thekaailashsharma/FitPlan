@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "581343537268",
+    "project_id": "fitplan-4de2b",
+    "storage_bucket": "fitplan-4de2b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:581343537268:android:09d52776acc1a423e40921",
+        "android_client_info": {
+          "package_name": "fitplan.planner.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoOzihSIoYJwOSif_JPqCOfRK1zxmDRZI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
