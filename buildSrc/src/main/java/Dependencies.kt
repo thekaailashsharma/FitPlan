@@ -50,9 +50,6 @@ object Versions {
     // Wheel Picker
     const val `wheel-picker` = "1.0.0-beta01"
 
-    // Calendar
-    const val `calendar` = "2.3.0"
-
 }
 
 
@@ -125,9 +122,6 @@ object Dependencies {
 
     // Wheel Picker
     const val `wheel-picker` = "com.github.zj565061763:compose-wheel-picker:${Versions.`wheel-picker`}"
-
-    // Calendar
-    const val `calendar-compose` = "com.kizitonwose.calendar:compose:${Versions.calendar}"
 
 }
 

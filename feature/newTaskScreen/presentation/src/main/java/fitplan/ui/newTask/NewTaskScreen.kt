@@ -219,10 +219,6 @@ fun NewTaskScreen(homeViewModel: HomeViewModel, navController: NavController) {
                     ) {
                         timeDialogState.show()
                     }
-                    Spacer(modifier = Modifier.height(15.dp))
-                    ReusableEditTextCard(text = "Add a location", icon = R.drawable.loc) {
-
-                    }
                     Spacer(modifier = Modifier.height(25.dp))
                 }
 

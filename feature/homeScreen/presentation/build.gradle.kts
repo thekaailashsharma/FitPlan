@@ -66,8 +66,6 @@ dependencies {
     // Collapsing Toolbar
     implementation(Dependencies.`collapsing-toolbar`)
 
-    // Calendar
-    implementation(Dependencies.`calendar-compose`)
 
     // Theme module
     implementation(project(":theme"))
@@ -77,6 +75,11 @@ dependencies {
 
     // Room Module
     implementation(project(":core:room"))
+
+    // Onboarding module: Data
+    implementation(project(":feature:onboarding:data"))
+    //Onboarding Presentation Module
+    implementation(project(":feature:onboarding:presentation"))
 
     // Testing
     testImplementation("junit:junit:4.13.2")

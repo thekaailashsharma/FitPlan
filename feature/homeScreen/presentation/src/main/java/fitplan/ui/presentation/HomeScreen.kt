@@ -54,6 +54,8 @@ import androidx.navigation.NavController
 import fitplan.core.room.HomeViewModel
 import fitplan.planner.baseui.navigation.Screens
 import fitplan.planner.baseui.utils.ProfileImage
+import fitplan.planner.baseui.utils.convertEpochDayToFormattedDate
+import fitplan.ui.onboarding.dummyTasks
 import fitplan.ui.theme.backGround
 import fitplan.ui.theme.buttonBackground
 import fitplan.ui.theme.lightGray
@@ -86,7 +88,8 @@ fun HomeScreen(
                     Icons.Filled.Add,
                     null,
                     tint = Color.White,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier
+                        .size(24.dp)
                         .clip(CircleShape)
                 )
             }
@@ -366,6 +369,8 @@ fun HomeScreen(
                             }
                         }
 
+                        Spacer(modifier = Modifier.height(20.dp))
+
 
                     }
 
@@ -397,7 +402,15 @@ fun HomeScreen(
                     items(allTodos.value) { todo ->
                         HomeScreenCard(
                             text = todo.title,
-                            icon = fitplan.ui.theme.R.drawable.fitplan
+                            icon = dummyTasks.find { kk ->
+                                kk.name.equals(
+                                    todo.tags ?: "FitPlan",
+                                    ignoreCase = true
+                                )
+                            }?.icon ?: fitplan.ui.theme.R.drawable.fitplan,
+                            description = todo.description ?: "",
+                            date = convertEpochDayToFormattedDate(todo.date),
+                            priority = todo.priority
                         )
                     }
                 }

@@ -1,6 +1,7 @@
 package fitplan.core.room
 
 import android.app.Application
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,4 +30,5 @@ class HomeViewModel @Inject constructor(
             dbRepository.delete(uuid)
         }
     }
+
 }
