@@ -13,3 +13,7 @@ val monte = FontFamily(
 val monteEB = FontFamily(
     Font(R.font.monteeb),
 )
+
+val merinda = FontFamily(
+    Font(R.font.merinda),
+)

@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id(Plugins.`dagger-hilt-android`)
+    kotlin(Plugins.kapt)
 }
 
 android {
@@ -68,6 +70,21 @@ dependencies {
 
     // Theme module
     implementation(project(":theme"))
+
+    // Dagger Hilt
+    implementation(Dependencies.`hilt-android`)
+    implementation(Dependencies.`hilt-navigation-compose`)
+    kapt(Dependencies.`hilt-compiler`)
+
+    // Room
+    implementation(Dependencies.`room-runtime`)
+    implementation(Dependencies.`room-ktx`)
+    kapt(Dependencies.`room-compiler`)
+
+    // Room Module
+    implementation(project(":core:room"))
+
+
 
 
     // Testing

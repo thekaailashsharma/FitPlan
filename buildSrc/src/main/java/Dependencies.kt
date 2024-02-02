@@ -44,6 +44,12 @@ object Versions {
     // JetFirestore
     const val `jet-firestore` = "1.0.2"
 
+    // Collapsing Toolbar
+    const val `collapsing-toolbar` = "2.3.5"
+
+    // Wheel Picker
+    const val `wheel-picker` = "1.0.0-beta01"
+
 }
 
 
@@ -110,6 +116,12 @@ object Dependencies {
     const val `firebase-auth` = "com.google.firebase:firebase-auth-ktx"
     const val `firebase-firestore` = "com.google.firebase:firebase-firestore-ktx"
     const val `jet-firestore` = "com.github.raipankaj:JetFirestore:${Versions.`jet-firestore`}"
+
+    // Collapsing Toolbar
+    const val `collapsing-toolbar` = "me.onebone:toolbar-compose:${Versions.`collapsing-toolbar`}"
+
+    // Wheel Picker
+    const val `wheel-picker` = "com.github.zj565061763:compose-wheel-picker:${Versions.`wheel-picker`}"
 
 }
 

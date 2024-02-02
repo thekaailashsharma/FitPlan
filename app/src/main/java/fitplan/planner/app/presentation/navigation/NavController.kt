@@ -13,24 +13,28 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import fitplan.core.firebase.LoginViewModel
+import fitplan.core.room.HomeViewModel
 import fitplan.planner.baseui.navigation.Screens
 import fitplan.preferences.datastore.UserDatastore
+import fitplan.ui.newTask.NewTaskScreen
 import fitplan.ui.onboarding.AvatarsScreen
 import fitplan.ui.onboarding.OnBoardingScreen
+import fitplan.ui.presentation.HomeScreen
+import fitplan.ui.presentation.NewProfileScreen
+import fitplan.ui.presentation.SplashScreen
 
 @Composable
 fun NavigationController(paddingValues: PaddingValues) {
     val navController = rememberNavController()
     val loginViewModel: LoginViewModel = hiltViewModel()
+    val homeViewModel: HomeViewModel = hiltViewModel()
     val context = LocalContext.current
     val datastore = UserDatastore(context)
-    val name = datastore.getName.collectAsState(initial = "")
     val email = datastore.getEmail.collectAsState(initial = "")
-    val pfp = datastore.getPfp.collectAsState(initial = "")
-    val gender = datastore.getGender.collectAsState(initial = "")
+    val isLoggedIn = datastore.getLoginStatus.collectAsState(initial = false)
     NavHost(
         navController = navController,
-        startDestination = Screens.Onboarding.route
+        startDestination = Screens.SplashScreen.route
     ) {
         composable(Screens.Onboarding.route) {
             OnBoardingScreen(
@@ -41,12 +45,11 @@ fun NavigationController(paddingValues: PaddingValues) {
         }
 
         composable(Screens.Home.route) {
-            Column {
-//               Text(name.value, fontSize = 20.sp, color = Color.White)
-                Text(email.value, fontSize = 20.sp, color = Color.White)
-//                Text(pfp.value, fontSize = 20.sp, color = Color.White)
-                Text(gender.value, fontSize = 20.sp, color = Color.White)
-            }
+            HomeScreen(
+                navController = navController,
+                homeViewModel = homeViewModel,
+               email = email.value
+            )
         }
 
         composable(Screens.ChooseAvatar.route) {
@@ -54,6 +57,18 @@ fun NavigationController(paddingValues: PaddingValues) {
                 navController = navController,
                 viewModel = loginViewModel
             )
+        }
+
+        composable(Screens.AddTask.route) {
+            NewTaskScreen(homeViewModel, navController)
+        }
+
+        composable(Screens.ProfileScreen.route) {
+            NewProfileScreen(navController = navController, homeViewModel)
+        }
+
+        composable(Screens.SplashScreen.route) {
+            SplashScreen(navController = navController)
         }
 
     }

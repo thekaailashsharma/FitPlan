@@ -126,6 +126,15 @@ dependencies {
     // Core Datastore module
     implementation(project(":core:datastore"))
 
+    // Home Screen module
+    implementation(project(":feature:homeScreen:presentation"))
+
+    // NewTask module
+    implementation(project(":feature:newTaskScreen:presentation"))
+
+    // Room Module
+    implementation(project(":core:room"))
+
 
     // Testing
     testImplementation("junit:junit:4.13.2")

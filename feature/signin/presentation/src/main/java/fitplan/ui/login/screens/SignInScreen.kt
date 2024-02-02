@@ -50,7 +50,11 @@ import androidx.navigation.NavController
 import fitplan.core.firebase.LoginViewModel
 import fitplan.core.firebase.data.SignInStatus
 import fitplan.core.firebase.domain.signInUser
+import fitplan.planner.baseui.navigation.Screens
 import fitplan.planner.baseui.utils.TextFieldWithIcons
+import fitplan.preferences.datastore.UserDatastore
+import fitplan.preferences.datastore.UserDatastore.Companion.email
+import fitplan.preferences.datastore.UserDatastore.Companion.gender
 import fitplan.ui.theme.R
 import fitplan.ui.theme.backGround
 import fitplan.ui.theme.monte
@@ -72,6 +76,7 @@ fun SignInScreen(
     var loginPassword by remember { mutableStateOf(TextFieldValue("")) }
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    val datastore = UserDatastore(context)
     AnimatedVisibility(
         visible = !isRegistered.value,
         enter = slideInHorizontally(initialOffsetX = {
@@ -157,11 +162,14 @@ fun SignInScreen(
                                     .collectLatest { status ->
                                         when (status) {
                                             is SignInStatus.Success -> {
+                                                datastore.saveEmail(loginEmail.text)
+                                                datastore.saveLoginStatus(true)
                                                 Toast.makeText(
                                                     context,
                                                     "Success",
                                                     Toast.LENGTH_SHORT
                                                 ).show()
+                                                navController.navigate(Screens.Home.route)
                                             }
 
                                             is SignInStatus.Error -> {

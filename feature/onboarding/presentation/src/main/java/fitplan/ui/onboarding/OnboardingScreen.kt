@@ -7,6 +7,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -222,7 +224,12 @@ fun OnBoardingScreen(
 
 
 @Composable
-fun MarqueeCard(modifier: Modifier = Modifier, taskItem: Tasks) {
+fun MarqueeCard(
+    modifier: Modifier = Modifier,
+    taskItem: Tasks,
+    isSelected: Boolean = false,
+    onClick: () -> Unit = {},
+) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent,
@@ -230,14 +237,17 @@ fun MarqueeCard(modifier: Modifier = Modifier, taskItem: Tasks) {
         modifier = modifier
             .width(200.dp)
             .height(80.dp)
-            .padding(horizontal = 10.dp, vertical = 8.dp),
+            .padding(horizontal = 10.dp, vertical = 8.dp)
+            .clickable(interactionSource = MutableInteractionSource(), indication = null) {
+                onClick()
+            },
         shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(1.dp, Color(0xFFABACAD).copy(alpha = 0.5f))
+        border = BorderStroke(1.dp, if (isSelected) Color.White else Color(0xFFABACAD).copy(alpha = 0.5f))
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .alpha(0.5f)
+                .alpha(if (isSelected) 1f else 0.5f)
         ) {
             Row(
                 modifier = Modifier
@@ -250,7 +260,7 @@ fun MarqueeCard(modifier: Modifier = Modifier, taskItem: Tasks) {
                     modifier = Modifier
                         .size(40.dp)
                         .padding(start = 10.dp),
-                    tint = taskItem.color.copy(0.85f)
+                    tint = if (isSelected) taskItem.color else taskItem.color.copy(0.85f)
                 )
                 Spacer(modifier = Modifier.width(7.dp))
                 Text(
@@ -263,7 +273,7 @@ fun MarqueeCard(modifier: Modifier = Modifier, taskItem: Tasks) {
                         .fillMaxWidth(1f)
                         .padding(horizontal = 10.dp),
                     textAlign = TextAlign.Center,
-                    color = taskItem.color.copy(0.85f),
+                    color = if (isSelected) taskItem.color else taskItem.color.copy(0.85f),
                 )
             }
         }
