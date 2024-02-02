@@ -35,11 +35,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.sd.lib.compose.wheel_picker.rememberFWheelPickerState
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import fitplan.core.room.HomeViewModel
+import fitplan.core.room.entity.Todos
+import fitplan.planner.baseui.navigation.Screens
 import fitplan.planner.data.dto.Tasks
 import fitplan.ui.theme.backGround
 import fitplan.ui.theme.lightGray
@@ -54,7 +58,9 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 @Composable
-fun NewTaskScreen() {
+fun NewTaskScreen(homeViewModel: HomeViewModel, navController: NavController) {
+    var title by remember { mutableStateOf(TextFieldValue("")) }
+    var description by remember { mutableStateOf(TextFieldValue("")) }
     val context = LocalContext.current
     val priorityState = rememberFWheelPickerState()
     val state = rememberCollapsingToolbarScaffoldState()
@@ -86,7 +92,7 @@ fun NewTaskScreen() {
             ) {
                 Button(
                     onClick = {
-
+                        navController.navigate(Screens.Home.route)
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
@@ -105,7 +111,18 @@ fun NewTaskScreen() {
 
                 Button(
                     onClick = {
-
+                        homeViewModel.insertTodo(
+                            Todos(
+                                title = title.text,
+                                description = description.text,
+                                priority = priority.intValue,
+                                date = date.toEpochDay(),
+                                completed = false,
+                                tags = task.value?.name,
+                                location = "Mumbai"
+                            )
+                        )
+                        navController.navigate(Screens.Home.route)
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
@@ -125,8 +142,6 @@ fun NewTaskScreen() {
         }
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            var title by remember { mutableStateOf(TextFieldValue("")) }
-            var description by remember { mutableStateOf(TextFieldValue("")) }
             Column(
                 modifier = Modifier
                     .fillMaxSize()

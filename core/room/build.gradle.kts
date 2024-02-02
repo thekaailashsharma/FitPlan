@@ -1,12 +1,12 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
     id(Plugins.`dagger-hilt-android`)
-    kotlin(Plugins.kapt)
 }
 
 android {
-    namespace = "fitplan.planner.baseui"
+    namespace = "fitplan.core.room"
     compileSdk = 33
 
     defaultConfig {
@@ -32,17 +32,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
 }
 
 dependencies {
@@ -52,41 +41,17 @@ dependencies {
     implementation(Dependencies.`lifecycle-runtime-ktx`)
     implementation(Dependencies.`activity-compose`)
 
-    // Compose
-    implementation(platform(Dependencies.`compose-bom`))
-    implementation(Dependencies.`compose-ui`)
-    implementation(Dependencies.`compose-ui-graphics`)
-    implementation(Dependencies.`compose-ui-tooling-preview`)
-    implementation(Dependencies.`compose-material3`)
-
-    // Material Extended Icons
-    implementation(Dependencies.`material3-icons-extended`)
-
-    // Navigation
-    implementation(Dependencies.`navigation-compose`)
-
-    // Coil
-    implementation(Dependencies.`coil-compose`)
-
-    // Theme module
-    implementation(project(":theme"))
+    // Room
+    implementation(Dependencies.`room-runtime`)
+    implementation(Dependencies.`room-ktx`)
+    kapt(Dependencies.`room-compiler`)
 
     // Dagger Hilt
     implementation(Dependencies.`hilt-android`)
     implementation(Dependencies.`hilt-navigation-compose`)
     kapt(Dependencies.`hilt-compiler`)
 
-    // Room
-    implementation(Dependencies.`room-runtime`)
-    implementation(Dependencies.`room-ktx`)
-    kapt(Dependencies.`room-compiler`)
-
-    // Room Module
-    implementation(project(":core:room"))
-
-
-
-    // Testing
+    //Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -31,6 +33,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,6 +50,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import fitplan.core.room.HomeViewModel
+import fitplan.planner.baseui.navigation.Screens
 import fitplan.planner.baseui.utils.ProfileImage
 import fitplan.ui.theme.backGround
 import fitplan.ui.theme.buttonBackground
@@ -61,16 +67,28 @@ import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(userPfp: String) {
+fun HomeScreen(
+    userPfp: String,
+    navController: NavController,
+    homeViewModel: HomeViewModel
+) {
+    val allTodos = homeViewModel.allTodos.collectAsState(initial = listOf())
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
             FloatingActionButton(
                 containerColor = buttonBackground,
                 onClick = {
-//                    navController.navigate(NavScreen.AddEditTaskScreen.route)
+                    navController.navigate(Screens.AddTask.route)
                 }) {
-                Icon(Icons.Filled.Add, null, tint = Color.White)
+                Icon(
+                    Icons.Filled.Add,
+                    null,
+                    tint = Color.White,
+                    modifier = Modifier.size(24.dp)
+                        .clip(CircleShape)
+                )
             }
         },
         containerColor = backGround,
@@ -376,10 +394,10 @@ fun HomeScreen(userPfp: String) {
                         end = 20.dp
                     )
                 ) {
-                    items(100) {
-                        InfoWithIcon(
-                            info = "  Temperature: 28 °C",
-                            icon = painterResource(id = R.drawable.thermo_icon)
+                    items(allTodos.value) { todo ->
+                        HomeScreenCard(
+                            text = todo.title,
+                            icon = fitplan.ui.theme.R.drawable.fitplan
                         )
                     }
                 }

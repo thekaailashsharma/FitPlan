@@ -132,6 +132,9 @@ dependencies {
     // NewTask module
     implementation(project(":feature:newTaskScreen:presentation"))
 
+    // Room Module
+    implementation(project(":core:room"))
+
 
     // Testing
     testImplementation("junit:junit:4.13.2")

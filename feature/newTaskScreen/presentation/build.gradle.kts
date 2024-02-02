@@ -85,6 +85,9 @@ dependencies {
     // Onboarding module: Presentation
     implementation(project(":feature:onboarding:presentation"))
 
+    // Room module
+    implementation(project(":core:room"))
+
 
     // Testing
     testImplementation("junit:junit:4.13.2")

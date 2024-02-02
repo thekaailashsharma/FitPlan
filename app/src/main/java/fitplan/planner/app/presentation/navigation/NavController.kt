@@ -13,16 +13,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import fitplan.core.firebase.LoginViewModel
+import fitplan.core.room.HomeViewModel
 import fitplan.planner.baseui.navigation.Screens
 import fitplan.preferences.datastore.UserDatastore
 import fitplan.ui.newTask.NewTaskScreen
 import fitplan.ui.onboarding.AvatarsScreen
 import fitplan.ui.onboarding.OnBoardingScreen
+import fitplan.ui.presentation.HomeScreen
 
 @Composable
 fun NavigationController(paddingValues: PaddingValues) {
     val navController = rememberNavController()
     val loginViewModel: LoginViewModel = hiltViewModel()
+    val homeViewModel: HomeViewModel = hiltViewModel()
     val context = LocalContext.current
     val datastore = UserDatastore(context)
     val name = datastore.getName.collectAsState(initial = "")
@@ -31,7 +34,7 @@ fun NavigationController(paddingValues: PaddingValues) {
     val gender = datastore.getGender.collectAsState(initial = "")
     NavHost(
         navController = navController,
-        startDestination = Screens.Onboarding.route
+        startDestination = Screens.Home.route
     ) {
         composable(Screens.Onboarding.route) {
             OnBoardingScreen(
@@ -42,12 +45,11 @@ fun NavigationController(paddingValues: PaddingValues) {
         }
 
         composable(Screens.Home.route) {
-            Column {
-//               Text(name.value, fontSize = 20.sp, color = Color.White)
-                Text(email.value, fontSize = 20.sp, color = Color.White)
-//                Text(pfp.value, fontSize = 20.sp, color = Color.White)
-                Text(gender.value, fontSize = 20.sp, color = Color.White)
-            }
+            HomeScreen(
+                userPfp = pfp.value,
+                navController = navController,
+                homeViewModel = homeViewModel
+            )
         }
 
         composable(Screens.ChooseAvatar.route) {
@@ -58,7 +60,7 @@ fun NavigationController(paddingValues: PaddingValues) {
         }
 
         composable(Screens.AddTask.route) {
-            NewTaskScreen()
+            NewTaskScreen(homeViewModel, navController)
         }
 
     }

@@ -36,9 +36,9 @@ class MainActivity : ComponentActivity() {
                     val name = datastore.getName.collectAsState(initial = "")
                     val email = datastore.getEmail.collectAsState(initial = "")
                     val pfp = datastore.getPfp.collectAsState(initial = "")
-                    NewTaskScreen()
+//                    NewTaskScreen()
 //                    HomeScreen(pfp.value)
-//                    NavigationController(paddingValues = paddingValue)
+                    NavigationController(paddingValues = paddingValue)
                 }
             }
         }
