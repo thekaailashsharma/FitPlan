@@ -18,4 +18,17 @@ interface TodosDao {
 
     @Query("DELETE FROM todos WHERE id = :id")
     suspend fun delete(id: UUID)
+
+    @Query(
+        """
+           SELECT * from todos as his 
+           where his.completed like '%' || :query || '%' 
+           or his.date like '%' || :query || '%' 
+           or his.title like '%' || :query || '%' 
+           or his.description like '%' || :query || '%' 
+           or his.priority like '%' || :query || '%' 
+           or his.tags like '%' || :query || '%' 
+       """
+    )
+    fun search(query: String): Flow<List<Todos>>
 }

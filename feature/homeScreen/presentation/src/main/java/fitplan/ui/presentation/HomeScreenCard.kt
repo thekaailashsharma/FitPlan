@@ -56,6 +56,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun HomeScreenCard(
+    modifier: Modifier = Modifier,
     priority: Int,
     isSelected: Boolean = false,
     text: String,
@@ -68,7 +69,7 @@ fun HomeScreenCard(
         colors = CardDefaults.cardColors(
             containerColor = backGround.copy(alpha = 0.7f),
         ),
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = 15.dp),
         shape = RoundedCornerShape(10.dp),
         border = BorderStroke(

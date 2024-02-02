@@ -23,4 +23,6 @@ class DatabaseRepo(private val todosDao: TodosDao) {
             todosDao.delete(id)
         }
     }
+
+    fun searchQuery(searchQuery: String) = todosDao.search(query = searchQuery)
 }

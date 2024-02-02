@@ -1,6 +1,17 @@
 package fitplan.ui.presentation
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
+import androidx.compose.animation.with
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,8 +33,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -32,13 +46,22 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -47,6 +70,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -63,11 +88,22 @@ import fitplan.ui.theme.merinda
 import fitplan.ui.theme.monteEB
 import fitplan.ui.theme.orange
 import fitplan.ui.theme.textColor
+import fitplan.ui.theme.yellow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import me.onebone.toolbar.CollapsingToolbarScaffold
+import me.onebone.toolbar.ExperimentalToolbarApi
 import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class,
+    ExperimentalFoundationApi::class, ExperimentalToolbarApi::class
+)
 @Composable
 fun HomeScreen(
     userPfp: String,
@@ -75,6 +111,10 @@ fun HomeScreen(
     homeViewModel: HomeViewModel
 ) {
     val allTodos = homeViewModel.allTodos.collectAsState(initial = listOf())
+    val isSearching = homeViewModel.isChecking.collectAsState()
+    val searchText = homeViewModel.searchText.collectAsState()
+    val todos = homeViewModel.todos.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -98,9 +138,17 @@ fun HomeScreen(
 //        drawerContent = { SideDrawer(navController = navController) }
     ) {
         println(it)
+        val state = rememberCollapsingToolbarScaffoldState()
+        LaunchedEffect(key1 = isSearching.value) {
+            if (isSearching.value) {
+                state.toolbarState.collapse()
+            } else {
+                state.toolbarState.expand()
+            }
+        }
 
 //        val homeUiState = homeViewModel.homeUiState
-        val state = rememberCollapsingToolbarScaffoldState()
+
 
         CollapsingToolbarScaffold(
             modifier = Modifier
@@ -153,11 +201,16 @@ fun HomeScreen(
                                 fontWeight = FontWeight.Light,
                                 fontSize = 20.sp,
                                 color = textColor,
+                                lineHeight = 35.sp
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                             Row(modifier = Modifier.width(150.dp)) {
                                 Text(
-                                    text = "You currently have 3 unfinished tasks",
+                                    text = "You currently have ${
+                                        allTodos.value.filter { too ->
+                                            !too.completed
+                                        }.size
+                                    } unfinished tasks",
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Light,
                                     fontFamily = monteEB
@@ -183,111 +236,56 @@ fun HomeScreen(
                         )
                     }
 
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = lightGray.copy(alpha = 0.7f),
+
+                    TextField(
+                        value = searchText.value,
+                        onValueChange = { value ->
+                            coroutineScope.launch {
+                                homeViewModel.onSearchQueryChange(value)
+                                homeViewModel.searchQuery(value).collectLatest { too ->
+                                    println("Toooo: $too")
+                                    homeViewModel.updateTodos(too)
+                                }
+
+                            }
+                        },
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = lightGray,
+                            focusedIndicatorColor = yellow.copy(0.5f),
+                            unfocusedIndicatorColor = yellow.copy(0.5f),
+                            disabledIndicatorColor = textColor,
+                            errorIndicatorColor = textColor,
                         ),
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp, vertical = 8.dp)
-                            .shadow(10.dp, shape = RoundedCornerShape(10.dp)),
-                        shape = RoundedCornerShape(10.dp),
-                        border = BorderStroke(1.dp, Color.White)
-                    ) {
-                        Column(
-                            modifier = Modifier,
-                            verticalArrangement = Arrangement.SpaceEvenly
-                        ) {
-
-//                        if (homeUiState.hasNetworkAccess && homeUiState.hasLocationAccess) {
-                            Row(
-                                modifier = Modifier
-                                    .padding(20.dp, 10.dp, 0.dp, 0.dp)
-                                    .width(250.dp)
-                            ) {
-                                Text(
-                                    text = "Weather today at 70:",
-                                    fontSize = 12.sp,
-                                    fontWeight = FontWeight.Light,
-                                    fontFamily = monteEB,
-                                    color = textColor
-                                )
-                            }
-
-                            Row(
-                                modifier = Modifier
-                                    .padding(20.dp, 0.dp, 20.dp, 0.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-
-                                Column(
-                                    modifier = Modifier.height(70.dp),
-                                    verticalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    InfoWithIcon(
-                                        info = "  Temperature: 28 °C",
-                                        icon = painterResource(id = R.drawable.thermo_icon)
-                                    )
-                                    InfoWithIcon(
-                                        info = "  Humidity: 30 %",
-                                        icon = painterResource(id = R.drawable.humidity_icon)
-                                    )
-                                    InfoWithIcon(
-                                        info = "  Precipitation: $100 mm",
-                                        icon = painterResource(id = R.drawable.precipitation_icon)
-                                    )
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Filled.Search,
+                                contentDescription = "Search",
+                                tint = textColor
+                            )
+                        },
+                        singleLine = true,
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = "Search",
+                                tint = textColor,
+                                modifier = Modifier.clickable {
+//                                        isSearchVisible = !isSearchVisible
+//                                        allWastes = storedWastes
                                 }
-
-                                Column(
-                                    modifier = Modifier.padding(PaddingValues(start = 10.dp)),
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-
-                                    Image(
-                                        modifier = Modifier.scale(1f),
-                                        painter = painterResource(id = fitplan.ui.presentation.R.drawable.clear_sky),
-                                        contentDescription = null
-                                    )
-
-                                    Text(
-                                        text = "weatherType",
-                                        fontWeight = FontWeight.Light,
-                                        fontSize = 12.sp,
-                                        fontFamily = monteEB,
-                                        color = textColor
-                                    )
-                                }
-                            }
-//                        } else {
-//                            Box(
-//                                modifier = Modifier
-//                                    .fillMaxWidth()
-//                                    .height(140.dp),
-//                                contentAlignment = Alignment.Center
-//                            ) {
-//                                when {
-//                                    !homeUiState.hasNetworkAccess && !homeUiState.hasLocationAccess -> NoAccessDisplay(
-//                                        textToDisplay = "No internet connection and\nlocation is not enabled"
-//                                    )
-//                                    !homeUiState.hasNetworkAccess -> NoAccessDisplay(
-//                                        textToDisplay = "No internet connection"
-//                                    )
-//                                    !homeUiState.hasLocationAccess -> NoAccessDisplay(
-//                                        textToDisplay = "Location is not enabled"
-//                                    )
-//                                }
-//
-//                            }
-//
-//                        }
-                        }
-                    }
-
-                    Spacer(
+                            )
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(20.dp)
+                            .padding(horizontal = 10.dp, vertical = 20.dp)
+                            .shadow(50.dp, shape = RoundedCornerShape(10.dp)),
+                        maxLines = 1,
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Search
+                        )
                     )
                 }
+
 
                 Spacer(
                     modifier = Modifier
@@ -302,93 +300,95 @@ fun HomeScreen(
                     .fillMaxSize()
                     .background(backGround)
             ) {
-                Box(
-                    modifier = Modifier
-                ) {
-
-                    Column(
+                AnimatedVisibility(visible = !isSearching.value) {
+                    Box(
                         modifier = Modifier
-                            .padding(PaddingValues(start = 20.dp, end = 20.dp, top = 10.dp))
                     ) {
 
-                        Row(
+                        Column(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .height(50.dp)
-                                .padding(PaddingValues(start = 10.dp, end = 10.dp)),
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            verticalAlignment = Alignment.CenterVertically
+                                .padding(PaddingValues(start = 20.dp, end = 20.dp, top = 10.dp))
                         ) {
 
-                            Box(
+                            Row(
                                 modifier = Modifier
-                                    .height(45.dp)
-                                    .width(150.dp)
-                                    .clickable(
-                                        interactionSource = MutableInteractionSource(),
-                                        indication = null,
-                                        onClick = {
-
-                                        }),
-                                contentAlignment = Alignment.Center
+                                    .fillMaxWidth()
+                                    .height(50.dp)
+                                    .padding(PaddingValues(start = 10.dp, end = 10.dp)),
+                                horizontalArrangement = Arrangement.SpaceEvenly,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
-                                    text = "TO DO",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 14.sp,
-                                    color = textColor,
-                                    fontFamily = monteEB
+
+                                Box(
+                                    modifier = Modifier
+                                        .height(45.dp)
+                                        .width(150.dp)
+                                        .clickable(
+                                            interactionSource = MutableInteractionSource(),
+                                            indication = null,
+                                            onClick = {
+
+                                            }),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = "TO DO",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 14.sp,
+                                        color = textColor,
+                                        fontFamily = monteEB
+                                    )
+                                }
+
+                                Divider(
+                                    modifier = Modifier
+                                        .height(20.dp)
+                                        .width(1.dp)
+                                        .background(lightGray)
                                 )
+
+                                Box(
+                                    modifier = Modifier
+                                        .height(45.dp)
+                                        .width(150.dp)
+                                        .clickable(
+                                            interactionSource = MutableInteractionSource(),
+                                            indication = null,
+                                            onClick = {
+
+                                            }),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = "DONE",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 14.sp,
+                                        color = textColor
+                                    )
+                                }
                             }
 
-                            Divider(
-                                modifier = Modifier
-                                    .height(20.dp)
-                                    .width(1.dp)
-                                    .background(lightGray)
-                            )
+                            Spacer(modifier = Modifier.height(20.dp))
 
-                            Box(
-                                modifier = Modifier
-                                    .height(45.dp)
-                                    .width(150.dp)
-                                    .clickable(
-                                        interactionSource = MutableInteractionSource(),
-                                        indication = null,
-                                        onClick = {
 
-                                        }),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = "DONE",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 14.sp,
-                                    color = textColor
-                                )
-                            }
                         }
 
-                        Spacer(modifier = Modifier.height(20.dp))
-
-
-                    }
-
-                    Spacer(
-                        Modifier
-                            .fillMaxWidth()
-                            .height(40.dp)
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color.Transparent,
-                                        backGround
+                        Spacer(
+                            Modifier
+                                .fillMaxWidth()
+                                .height(40.dp)
+                                .background(
+                                    brush = Brush.verticalGradient(
+                                        colors = listOf(
+                                            Color.Transparent,
+                                            backGround
+                                        )
                                     )
                                 )
-                            )
-                            .align(Alignment.BottomCenter)
-                    )
+                                .align(Alignment.BottomCenter)
+                        )
 
+                    }
                 }
 
                 LazyColumn(
@@ -399,26 +399,31 @@ fun HomeScreen(
                         end = 20.dp
                     )
                 ) {
-                    items(allTodos.value) { todo ->
-                        HomeScreenCard(
-                            text = todo.title,
-                            icon = dummyTasks.find { kk ->
-                                kk.name.equals(
-                                    todo.tags ?: "FitPlan",
-                                    ignoreCase = true
-                                )
-                            }?.icon ?: fitplan.ui.theme.R.drawable.fitplan,
-                            description = todo.description ?: "",
-                            date = convertEpochDayToFormattedDate(todo.date),
-                            priority = todo.priority
-                        )
+                    items(todos.value.ifEmpty { allTodos.value }) { todo ->
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            HomeScreenCard(
+                                modifier = Modifier
+                                    .animateItemPlacement(),
+                                text = todo.title,
+                                icon = dummyTasks.find { kk ->
+                                    kk.name.equals(
+                                        todo.tags ?: "FitPlan",
+                                        ignoreCase = true
+                                    )
+                                }?.icon ?: fitplan.ui.theme.R.drawable.fitplan,
+                                description = todo.description ?: "",
+                                date = convertEpochDayToFormattedDate(todo.date),
+                                priority = todo.priority
+                            )
+                            Spacer(modifier = Modifier.height(20.dp))
+                        }
+
                     }
                 }
             }
-
-
         }
     }
 }
+
 
 
