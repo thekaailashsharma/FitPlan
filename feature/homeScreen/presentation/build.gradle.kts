@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id(Plugins.`google-gms-google-services`)
 }
 
 android {
@@ -66,6 +67,14 @@ dependencies {
     // Collapsing Toolbar
     implementation(Dependencies.`collapsing-toolbar`)
 
+    // Jet FireStore
+    implementation(Dependencies.`jet-firestore`)
+
+    // Swipeable
+    implementation("me.saket.swipe:swipe:1.2.0")
+
+    // Datastore module
+    implementation(project(":core:datastore"))
 
     // Theme module
     implementation(project(":theme"))
@@ -75,6 +84,14 @@ dependencies {
 
     // Room Module
     implementation(project(":core:room"))
+
+    // Firebase module
+    implementation(project(":core:firebase"))
+
+    // Firebase
+    implementation(platform(Dependencies.`firebase-bom`))
+    implementation(Dependencies.`firebase-auth`)
+    implementation(Dependencies.`firebase-firestore`)
 
     // Onboarding module: Data
     implementation(project(":feature:onboarding:data"))

@@ -48,6 +48,17 @@ class HomeViewModel @Inject constructor(
     private val _isChecking = MutableStateFlow<Boolean>(false)
     val isChecking: StateFlow<Boolean> = _isChecking.asStateFlow()
 
+    private val _name = MutableStateFlow("")
+    val name = _name.asStateFlow()
+
+    private val _pfp = MutableStateFlow("")
+    val pfp = _pfp.asStateFlow()
+
+    fun updateUser(newName: String, newPfp: String) {
+       _name.value = newName
+       _pfp.value = newPfp
+    }
+
 
     fun updateTodos(newTodos: List<Todos>) {
         _todos.value = newTodos

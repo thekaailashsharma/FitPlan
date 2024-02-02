@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -56,6 +58,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun HomeScreenCard(
+    isCompleted: Boolean = false,
     modifier: Modifier = Modifier,
     priority: Int,
     isSelected: Boolean = false,
@@ -77,92 +80,106 @@ fun HomeScreenCard(
             if (isSelected) green.copy(0.7f) else textColor.copy(alpha = 0.7f)
         )
     ) {
-        Spacer(modifier = Modifier.height(10.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(backGround)
-                .padding(horizontal = 25.dp)
-                .clickable(interactionSource = MutableInteractionSource(), indication = null) {
-                    onClick()
-                },
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = priority.toString(),
-                textAlign = TextAlign.Center,
-                color = textColor,
-                modifier = Modifier
-                    .background(lightGray, shape = CircleShape)
-                    .border(BorderStroke(1.dp, yellow.copy(0.75f)), shape = CircleShape)
-                    .circleLayout()
-                    .padding(8.dp),
-                fontWeight = FontWeight.ExtraBold,
-                fontSize = 19.sp
-            )
-            Column(
+        Box(modifier = Modifier.fillMaxSize()) {
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
+                    .background(backGround)
+                    .padding(horizontal = 25.dp)
+                    .clickable(interactionSource = MutableInteractionSource(), indication = null) {
+                        onClick()
+                    },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.End
+                Text(
+                    text = priority.toString(),
+                    textAlign = TextAlign.Center,
+                    color = textColor,
+                    modifier = Modifier
+                        .background(lightGray, shape = CircleShape)
+                        .border(BorderStroke(1.dp, yellow.copy(0.75f)), shape = CircleShape)
+                        .circleLayout()
+                        .padding(8.dp),
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 19.sp
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp)
                 ) {
-                    Text(
-                        text = date,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Light,
-                        fontFamily = merinda,
-                        color = blue,
-                    )
-                }
-                Row(
-                    modifier = Modifier.padding(start = 10.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    Column(horizontalAlignment = Alignment.Start) {
-                        Text(
-                            text = text,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            fontFamily = monte,
-                            color = textColor,
-                        )
-                        Spacer(modifier = Modifier.height(3.dp))
-                        Text(
-                            text = description,
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = merinda,
-                            color = indigo,
-                            overflow = TextOverflow.Ellipsis,
-                            maxLines = 1,
-                            modifier = Modifier.fillMaxWidth(0.5f)
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-                    }
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.End
                     ) {
-                        Icon(
-                            painter = painterResource(id = icon),
-                            contentDescription = null,
-                            tint = yellow.copy(0.65f),
-                            modifier = Modifier
-                                .size(34.dp)
+                        Text(
+                            text = date,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Light,
+                            fontFamily = merinda,
+                            color = blue,
                         )
                     }
-                }
+                    Row(
+                        modifier = Modifier.padding(start = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        Column(horizontalAlignment = Alignment.Start) {
+                            Text(
+                                text = text,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                fontFamily = monte,
+                                color = textColor,
+                            )
+                            Spacer(modifier = Modifier.height(3.dp))
+                            Text(
+                                text = description,
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                fontFamily = merinda,
+                                color = indigo,
+                                overflow = TextOverflow.Ellipsis,
+                                maxLines = 1,
+                                modifier = Modifier.fillMaxWidth(0.5f)
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                        }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            Icon(
+                                painter = painterResource(id = icon),
+                                contentDescription = null,
+                                tint = yellow.copy(0.65f),
+                                modifier = Modifier
+                                    .size(34.dp)
+                            )
+                        }
+                    }
 
+                }
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+
+            if (isCompleted) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Divider(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(top = 35.dp)
+                            .align(Alignment.Center),
+                        thickness = 1.dp,
+                        color = Color.White
+                    )
+                }
             }
         }
-        Spacer(modifier = Modifier.height(20.dp))
     }
 }
 

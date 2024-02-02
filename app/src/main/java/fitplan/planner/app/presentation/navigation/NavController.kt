@@ -20,6 +20,8 @@ import fitplan.ui.newTask.NewTaskScreen
 import fitplan.ui.onboarding.AvatarsScreen
 import fitplan.ui.onboarding.OnBoardingScreen
 import fitplan.ui.presentation.HomeScreen
+import fitplan.ui.presentation.NewProfileScreen
+import fitplan.ui.presentation.SplashScreen
 
 @Composable
 fun NavigationController(paddingValues: PaddingValues) {
@@ -28,13 +30,11 @@ fun NavigationController(paddingValues: PaddingValues) {
     val homeViewModel: HomeViewModel = hiltViewModel()
     val context = LocalContext.current
     val datastore = UserDatastore(context)
-    val name = datastore.getName.collectAsState(initial = "")
     val email = datastore.getEmail.collectAsState(initial = "")
-    val pfp = datastore.getPfp.collectAsState(initial = "")
-    val gender = datastore.getGender.collectAsState(initial = "")
+    val isLoggedIn = datastore.getLoginStatus.collectAsState(initial = false)
     NavHost(
         navController = navController,
-        startDestination = Screens.Home.route
+        startDestination = Screens.SplashScreen.route
     ) {
         composable(Screens.Onboarding.route) {
             OnBoardingScreen(
@@ -46,9 +46,9 @@ fun NavigationController(paddingValues: PaddingValues) {
 
         composable(Screens.Home.route) {
             HomeScreen(
-                userPfp = pfp.value,
                 navController = navController,
-                homeViewModel = homeViewModel
+                homeViewModel = homeViewModel,
+               email = email.value
             )
         }
 
@@ -61,6 +61,14 @@ fun NavigationController(paddingValues: PaddingValues) {
 
         composable(Screens.AddTask.route) {
             NewTaskScreen(homeViewModel, navController)
+        }
+
+        composable(Screens.ProfileScreen.route) {
+            NewProfileScreen(navController = navController, homeViewModel)
+        }
+
+        composable(Screens.SplashScreen.route) {
+            SplashScreen(navController = navController)
         }
 
     }
